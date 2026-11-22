@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin UKT SMI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-md">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+            <h1 class="text-2xl font-bold text-gray-800">Data Peserta UKT SMI</h1>
+            <a href="/admin/export" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow">
+                Download Excel (.xlsx)
+            </a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left border-collapse">
+                <thead class="bg-gray-200 text-gray-700">
+                    <tr>
+                        <th class="p-3 border">No</th>
+                        <th class="p-3 border">Foto</th>
+                        <th class="p-3 border">Nama Lengkap</th>
+                        <th class="p-3 border">Sabuk</th>
+                        <th class="p-3 border">Ukuran Jersey</th>
+                        <th class="p-3 border">Nama Jersey</th>
+                        <th class="p-3 border">No HP</th>
+                        <th class="p-3 border">Asal Unit</th>
+                        <th class="p-3 border">Aksi (Edit Cepat)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in peserta %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3 border">{{ loop.index }}</td>
+                        <td class="p-3 border">
+                            <a href="{{ url_for('static', filename='uploads/' + p.foto_filename) }}" target="_blank">
+                                <img src="{{ url_for('static', filename='uploads/' + p.foto_filename) }}" alt="Foto" class="w-12 h-12 object-cover rounded">
+                            </a>
+                        </td>
+                        <form action="/admin/edit/{{ p.id }}" method="POST">
+                            <td class="p-3 border">
+                                <input type="text" name="nama_lengkap" value="{{ p.nama_lengkap }}" class="border rounded px-2 py-1 w-full">
+                            </td>
+                            <td class="p-3 border">
+                                <input type="text" name="tingkatan_sabuk" value="{{ p.tingkatan_sabuk }}" class="border rounded px-2 py-1 w-28">
+                            </td>
+                            <td class="p-3 border">
+                                <input type="text" name="ukuran_jersey" value="{{ p.ukuran_jersey }}" class="border rounded px-2 py-1 w-16">
+                            </td>
+                            <td class="p-3 border">
+                                <input type="text" name="nama_jersey" value="{{ p.nama_jersey }}" class="border rounded px-2 py-1 w-32">
+                            </td>
+                            <td class="p-3 border">
+                                <input type="text" name="no_hp" value="{{ p.no_hp }}" class="border rounded px-2 py-1 w-32">
+                            </td>
+                            <td class="p-3 border">{{ p.asal_unit }}</td>
+                            <td class="p-3 border">
+                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs font-medium">
+                                    Simpan
+                                </button>
+                            </td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
